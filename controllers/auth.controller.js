@@ -43,6 +43,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
     }
     const hash = await bcrypt.hash(password, 10)
     await User.create({ name, email, password: hash })
+    res.json({ message: "User Register Success" })
 })
 exports.loginUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body

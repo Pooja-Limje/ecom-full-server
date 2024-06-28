@@ -20,7 +20,7 @@ exports.userUpadtePassword = asyncHandler(async (req, res) => {
 })
 exports.userPlaceOrder = asyncHandler(async (req, res) => {
     await Order.create(req.body)
-    res.json({ message: "Order Place Success", result })
+    res.json({ message: "Order Place Success" })
 })
 exports.userCancelOrder = asyncHandler(async (req, res) => {
     await Order.findByIdAndUpdate(req.params.id, { status: "cancel" })
