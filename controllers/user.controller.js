@@ -8,7 +8,7 @@ const asyncHandler = require("express-async-handler")
 const Order = require("../models/Order")
 
 exports.userGetAllOrders = asyncHandler(async (req, res) => {
-    const result = await Order.find({ user: req.params.id }).populate("products.product").sort({ createdAt: 1 })
+    const result = await Order.find({ user: req.params.id }).populate("products.product").sort({ createdAt: -1 })
     res.json({ message: "Order Fetch Success", result })
 })
 exports.userGetOrderDetails = asyncHandler(async (req, res) => {
