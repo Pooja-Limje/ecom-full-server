@@ -3,6 +3,8 @@ const Product = require("../models/Product")
 const { upload } = require("../utils/upload")
 const cloudinary = require("cloudinary").v2
 const path = require("path")
+const Order = require("../models/Order")
+const User = require("../models/User")
 
 
 cloudinary.config({
@@ -53,7 +55,13 @@ exports.getProductDetails = asyncHandler(async (req, res) => {
 })
 // order
 exports.getAllOrders = asyncHandler(async (req, res) => {
-    res.json({ message: "Order Fetch Success" })
+    const result = await Order.find()
+        .populate("user", { password: 0, active: 0, createdAt: 0, __v: 0 })
+        .populate("products.product", {
+            _id: 1, name: 1, desc: 1, price: 1, mrp: 1, images: 1
+        })
+        .sort({ createdAt: -1 })
+    res.json({ message: "Order Fetch Success", result })
 })
 exports.getOrderDetails = asyncHandler(async (req, res) => {
     res.json({ message: "Order Detail Fetch Success" })
@@ -62,20 +70,28 @@ exports.cancelOrder = asyncHandler(async (req, res) => {
     res.json({ message: "Order Cancel Success" })
 })
 exports.updateOrderStatus = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    const { status } = req.body
+    await Order.findByIdAndUpdate(id, { status })
     res.json({ message: "Order Status Update Success" })
 })
 
 // user
 exports.getAllUsers = asyncHandler(async (req, res) => {
-    res.json({ message: "User Fetch Success" })
+    const result = await User.find()
+    res.json({ message: "User Fetch Success", result })
 })
 exports.getUserDetails = asyncHandler(async (req, res) => {
     res.json({ message: "User Detail Fetch Success" })
 })
 exports.blockUser = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    await User.findByIdAndUpdate(id, { active: false })
     res.json({ message: "User Block Success" })
 })
 exports.unblockUser = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    await User.findByIdAndUpdate(id, { active: true })
     res.json({ message: "User Un-Block Success" })
 })
 exports.getUserOrders = asyncHandler(async (req, res) => {

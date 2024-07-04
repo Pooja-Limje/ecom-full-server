@@ -5,7 +5,7 @@ router
     .get("/order/:id", userController.userGetAllOrders)
     .get("/order-details/:id", userController.userGetOrderDetails)
     .post("/order-placed", userController.userPlaceOrder)
-    .get("/order-cancel/:id", userController.userCancelOrder)
+    .put("/order-canceled/:id", userController.userCancelOrder)
     .post("/update-password", userController.userUpdatePassword)
 
 module.exports = router

@@ -23,6 +23,6 @@ exports.userPlaceOrder = asyncHandler(async (req, res) => {
     res.json({ message: "Order Place Success" })
 })
 exports.userCancelOrder = asyncHandler(async (req, res) => {
-    await Order.findByIdAndDelete(req.params.id, { status: "cancel" })
-    res.json({ message: "Order Cancel Success", result })
+    await Order.findByIdAndUpdate(req.params.id, { status: "cancel" })
+    res.json({ message: "Order Cancel Success" })
 })
